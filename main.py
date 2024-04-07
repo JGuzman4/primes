@@ -3,16 +3,25 @@
 import json
 from scripts.graph.graph import graph_primes
 from scripts.xlsheets.xlsheets import create_workbook
-from scripts.prime.prime import is_prime, get_twin_primes
+from scripts.prime.prime import (
+    is_prime,
+    get_twin_primes,
+    prime_factors,
+    get_twin_prime_gaps,
+    get_between_twin_primes,
+)
 
 
 def main():
-    limit = 10000
+    limit = 10001
     nlist = {}
 
     plist = sorted([n for n in range(1, 1000) if is_prime(n)])
+
     tlist = get_twin_primes(plist)
+
     for i in range(1, limit):
+        factors = prime_factors(i)
         if i in plist:
             nlist[str(i)] = {"is_prime": True}
         else:
@@ -23,13 +32,16 @@ def main():
         else:
             nlist[str(i)]["twin_prime"] = False
 
+        nlist[str(i)]["factors"] = factors
+
+    get_between_twin_primes(nlist)
+    get_twin_prime_gaps(nlist)
+
     with open("data.json", "w") as fp:
         json.dump(nlist, fp, indent=4)
 
-    ## Create a graph of the prime numbers
-    # graph_primes()
     ## Create excel sheet with prime number data
-    # create_workbook()
+    # create_workbook(nlist)
 
 
 main()

@@ -1,5 +1,7 @@
 import math
 
+from xlwt.Style import print_function
+
 
 def nth_prime(n):
     """
@@ -36,6 +38,32 @@ def get_twin_primes(plist):
             tlist.append(p)
             tlist.append(plist[i + 1])
     return tlist
+
+
+def get_between_twin_primes(nlist):
+    # loop up to 10000
+    for i in range(2, len(nlist) - 1):
+        if (
+            nlist[str(i - 1)]["twin_prime"] == True
+            and nlist[str(i + 1)]["twin_prime"] == True
+        ):
+            nlist[str(i)]["between_twin_prime"] = True
+        else:
+            nlist[str(i)]["between_twin_prime"] = False
+
+
+def get_twin_prime_gaps(nlist):
+    # loop up to 10000
+    for i in range(2, len(nlist) - 1):
+        if nlist[str(i)]["between_twin_prime"] == True:
+            get_gap(nlist, i)
+
+
+def get_gap(nlist, i):
+    for j in range(i + 1, len(nlist) - 1):
+        if nlist[str(j)]["between_twin_prime"] == True:
+            nlist[str(i)]["twin_prime_gap"] = j - i
+            break
 
 
 def prime_factors(n):

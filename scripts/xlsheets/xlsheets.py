@@ -9,13 +9,13 @@ NOTES:
 """
 
 
-def create_workbook():
+def create_workbook(nlist):
     wb = xlwt.Workbook()
     ws = wb.add_sheet("Prime Factorizations")
-    for x in range(1, 65536):
+    for x in range(1, len(nlist)):
         primes = prime_factors(x)
         ws.write(x, 0, x)
         for index, prime in enumerate(primes):
             ws.write(x, index + 1, prime)
 
-    wb.save("primes.xls")
+    wb.save("primes-0.1.0.xls")
