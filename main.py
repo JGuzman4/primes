@@ -13,7 +13,7 @@ from scripts.prime.prime import (
 
 
 def main():
-    limit = 10001
+    limit = 1001
     nlist = {}
 
     plist = sorted([n for n in range(1, 1000) if is_prime(n)])

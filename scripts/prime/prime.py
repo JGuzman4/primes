@@ -44,8 +44,8 @@ def get_between_twin_primes(nlist):
     # loop up to 10000
     for i in range(2, len(nlist) - 1):
         if (
-            nlist[str(i - 1)]["twin_prime"] == True
-            and nlist[str(i + 1)]["twin_prime"] == True
+            nlist[str(i - 1)]["twin_prime"] is True
+            and nlist[str(i + 1)]["twin_prime"] is True
         ):
             nlist[str(i)]["between_twin_prime"] = True
         else:
@@ -55,15 +55,21 @@ def get_between_twin_primes(nlist):
 def get_twin_prime_gaps(nlist):
     # loop up to 10000
     for i in range(2, len(nlist) - 1):
-        if nlist[str(i)]["between_twin_prime"] == True:
-            get_gap(nlist, i)
+        if nlist[str(i)]["between_twin_prime"] is True:
+            get_gap_info(nlist, i)
 
 
-def get_gap(nlist, i):
-    for j in range(i + 1, len(nlist) - 1):
-        if nlist[str(j)]["between_twin_prime"] == True:
+def get_gap_info(nlist, i):
+    prime_count = 0
+    for j in range(i + 2, len(nlist) - 1):
+        if nlist[str(j)]["between_twin_prime"] is True:
+            nlist[str(j - 1)]["primes_since_last_twin_prime"] = (
+                0 if prime_count == 0 else prime_count - 1
+            )
             nlist[str(i)]["twin_prime_gap"] = j - i
             break
+        if nlist[str(j)]["is_prime"] is True:
+            prime_count += 1
 
 
 def prime_factors(n):
