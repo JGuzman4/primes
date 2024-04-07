@@ -15,6 +15,29 @@ def nth_prime(n):
         start += 1
 
 
+def is_prime(n):
+    if n > 1:
+        # Iterate from 2 to n // 2
+        for i in range(2, (n // 2) + 1):
+            # If num is divisible by any number between
+            # 2 and n / 2, it is not prime
+            if (n % i) == 0:
+                return False
+        else:
+            return True
+    else:
+        return False
+
+
+def get_twin_primes(plist):
+    tlist = []
+    for i, p in enumerate(plist):
+        if i < len(plist) - 1 and plist[i + 1] - p == 2:
+            tlist.append(p)
+            tlist.append(plist[i + 1])
+    return tlist
+
+
 def prime_factors(n):
     """
     a function to print all prime factors of

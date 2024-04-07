@@ -1,6 +1,13 @@
 import xlwt
 from ..prime.prime import prime_factors
 
+"""
+NOTES:
+    =COUNTIF(B73:P73,VALUE(2))
+    =COUNTIF(B73:P73,VALUE(3))
+    =MIN(Q73:R73)
+"""
+
 
 def create_workbook():
     wb = xlwt.Workbook()
