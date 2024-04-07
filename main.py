@@ -1,10 +1,11 @@
-# Python program to print prime factors
+## Python program to print prime factors
 
 import json
-from scripts.graph.graph import graph_primes
-from scripts.xlsheets.xlsheets import create_workbook
+import sympy
+from scripts.graph.graph import create_plot
+
+# from scripts.xlsheets.xlsheets import create_workbook
 from scripts.prime.prime import (
-    is_prime,
     get_twin_primes,
     prime_factors,
     get_twin_prime_gaps,
@@ -16,7 +17,7 @@ def main():
     limit = 1001
     nlist = {}
 
-    plist = sorted([n for n in range(1, 1000) if is_prime(n)])
+    plist = list(sympy.primerange(0, limit))
 
     tlist = get_twin_primes(plist)
 
@@ -40,6 +41,8 @@ def main():
     with open("data.json", "w") as fp:
         json.dump(nlist, fp, indent=4)
 
+    nums = range(limit)
+    create_plot(nums, figsize=10, s=0.4)
     ## Create excel sheet with prime number data
     # create_workbook(nlist)
 
