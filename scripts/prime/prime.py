@@ -1,7 +1,6 @@
 import math
 
 import sympy
-from xlwt.Style import print_function
 
 
 def nth_prime(n):
@@ -81,6 +80,8 @@ def get_twin_prime_gaps(nlist):
 
 def get_gap_info(nlist, i):
     prime_count = 0
+    # statically set this value for 3, since we know this case to always be 0
+    nlist[str(3)]["primes_since_last_twin_prime"] = 0
     for j in range(i + 2, len(nlist) - 1):
         if nlist[str(j)]["between_twin_prime"] is True:
             nlist[str(j - 1)]["primes_since_last_twin_prime"] = (
