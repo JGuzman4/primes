@@ -16,13 +16,11 @@ def main():
 
     get_between_twin_primes(nlist)
     get_twin_prime_gaps(nlist)
+    create_plot(range(limit), figsize=10, s=0.4)
+    create_workbook(nlist)
 
     with open("data.json", "w") as fp:
         json.dump(nlist, fp, indent=4)
-
-    create_plot(range(limit), figsize=10, s=0.4)
-    ## Create excel sheet with prime number data
-    create_workbook(nlist)
 
 
 main()
