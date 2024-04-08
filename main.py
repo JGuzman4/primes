@@ -3,8 +3,7 @@
 import json
 import sympy
 from scripts.graph.graph import create_plot
-
-# from scripts.xlsheets.xlsheets import create_workbook
+from scripts.xlsheets.xlsheets import create_workbook
 from scripts.prime.prime import (
     get_twin_primes,
     prime_factors,
@@ -14,7 +13,7 @@ from scripts.prime.prime import (
 
 
 def main():
-    limit = 1001
+    limit = 40001
     nlist = {}
 
     plist = list(sympy.primerange(0, limit))
@@ -41,10 +40,10 @@ def main():
     with open("data.json", "w") as fp:
         json.dump(nlist, fp, indent=4)
 
-    nums = range(limit)
-    create_plot(nums, figsize=10, s=0.4)
+    # nums = range(limit)
+    # create_plot(nums, figsize=10, s=0.4)
     ## Create excel sheet with prime number data
-    # create_workbook(nlist)
+    create_workbook(nlist)
 
 
 main()
