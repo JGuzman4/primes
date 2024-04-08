@@ -1,5 +1,6 @@
 import math
 
+import sympy
 from xlwt.Style import print_function
 
 
@@ -29,6 +30,25 @@ def is_prime(n):
             return True
     else:
         return False
+
+
+def get_prime_info(limit):
+    nlist = {}
+    plist = list(sympy.primerange(0, limit))
+    tlist = get_twin_primes(plist)
+    for i in range(1, limit):
+        if i in plist:
+            nlist[str(i)] = {"is_prime": True}
+        else:
+            nlist[str(i)] = {"is_prime": False}
+
+        if i in tlist:
+            nlist[str(i)]["twin_prime"] = True
+        else:
+            nlist[str(i)]["twin_prime"] = False
+
+        nlist[str(i)]["factors"] = prime_factors(i)
+    return nlist
 
 
 def get_twin_primes(plist):
