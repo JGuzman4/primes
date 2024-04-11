@@ -61,6 +61,7 @@ def get_twin_primes(plist):
 
 def get_between_twin_primes(nlist):
     # loop up to 10000
+    nlist[str(1)]["between_twin_prime"] = False
     for i in range(2, len(nlist) - 1):
         if (
             nlist[str(i - 1)]["twin_prime"] is True
@@ -96,7 +97,7 @@ def get_next_gap_info(nlist, i):
 
 def get_last_gap_info(nlist, i):
     prime_count = 0
-    for j in reversed(range(i - 2, 0)):
+    for j in range(i - 2, 1, -1):
         if nlist[str(j)]["between_twin_prime"] is True:
             nlist[str(j + 1)]["primes_til_next_twin_prime"] = (
                 0 if prime_count == 0 else prime_count - 1
