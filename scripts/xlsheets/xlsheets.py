@@ -12,6 +12,8 @@ headers_style = xlwt.easyxf(
     "font: name Times New Roman, color-index red, bold on", num_format_str="#,##0.00"
 )
 
+factor_count_limit = 174
+
 
 def create_workbook(nlist):
     wb = xlwt.Workbook()
@@ -64,7 +66,7 @@ def write_twin_primes_row(tp_index, num, twin_primes_ws, nlist):
     factors = nlist[str(num)]["factors"]
 
     twos = [i for i in factors if i == 2]
-    threes = [i for i in factors if i == 2]
+    threes = [i for i in factors if i == 3]
 
     twin_primes_ws.write(
         tp_index, 4, nlist[str(num - 1)]["primes_since_last_twin_prime"]
@@ -78,7 +80,7 @@ def write_twin_primes_row(tp_index, num, twin_primes_ws, nlist):
 
 def create_twin_primes_factorizations_sheet(wb, nlist):
     twin_primes_ws = wb.add_sheet("Twin Primes with Factorizations")
-    write_twin_primes_factorizations_headers(twin_primes_ws)
+    write_twin_primes_factorizations_headers(twin_primes_ws, nlist)
     tp_index = 1
     for num in range(1, len(nlist)):
         # write to the twin primes page if we are looking at a twin prime
@@ -90,12 +92,17 @@ def create_twin_primes_factorizations_sheet(wb, nlist):
             tp_index += 1
 
 
-def write_twin_primes_factorizations_headers(twin_primes_ws):
+def write_twin_primes_factorizations_headers(twin_primes_ws, nlist):
     twin_primes_ws.write(0, 0, "TP Index", headers_style)
     twin_primes_ws.write(0, 1, "Twin Prime Pair", headers_style)
     twin_primes_ws.write(0, 2, "Gap to next twin prime", headers_style)
     twin_primes_ws.write(0, 3, "Gap since last twin prime", headers_style)
     twin_primes_ws.write(0, 4, "Primes since last TP", headers_style)
+    index = 1
+    for num in range(1, factor_count_limit):
+        if nlist[str(num)]["is_prime"] is True:
+            twin_primes_ws.write(0, index + 4, f"count of {num} in gap", headers_style)
+            index += 1
 
 
 def write_twin_primes_factorizations_row(tp_index, num, twin_primes_ws, nlist):
@@ -107,3 +114,35 @@ def write_twin_primes_factorizations_row(tp_index, num, twin_primes_ws, nlist):
     twin_primes_ws.write(
         tp_index, 4, nlist[str(num - 1)]["primes_since_last_twin_prime"]
     )
+    factor_counts = count_factors_in_gap(num, nlist)
+    index = 1
+    for i in range(1, factor_count_limit):
+        if nlist[str(i)]["is_prime"] is True:
+            twin_primes_ws.write(tp_index, index + 4, factor_counts[str(i)])
+            index += 1
+
+
+def count_factors_in_gap(num, nlist):
+    factor_counts = {}
+    for j in range(1, factor_count_limit):
+        if nlist[str(j)]["is_prime"] is True:
+            factor_counts[str(j)] = 0
+
+    for j in range(1, factor_count_limit):
+        if nlist[str(j)]["is_prime"] is True:
+            factor_counts[str(j)] += len(
+                [n for n in nlist[str(num)]["factors"] if n == j]
+            )
+
+    for i in range(num + 1, len(nlist) - 1):
+        for j in range(1, factor_count_limit):
+            if nlist[str(j)]["is_prime"] is True:
+                factor_counts[str(j)] += len(
+                    [n for n in nlist[str(i)]["factors"] if n == j]
+                )
+        if (
+            "between_twin_prime" in nlist[str(i)].keys()
+            and nlist[str(i)]["between_twin_prime"] is True
+        ):
+            break
+    return factor_counts
